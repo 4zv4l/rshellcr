@@ -28,8 +28,9 @@ end
 
 ip = ARGV[0]? || usage "missing ip and port"
 port = ARGV[1]? || usage "missing port"
+port = port.to_i? || usage "bad port"
 
-tcp_server = TCPServer.new(ip, port.to_i)
+tcp_server = TCPServer.new(ip, port)
 `openssl req -x509 -newkey rsa:2048 -nodes -keyout /tmp/priv.key -out /tmp/cert.crt -subj "/CN=x" 2> /dev/null`
 ctx = OpenSSL::SSL::Context::Server.from_hash({"key" => "/tmp/priv.key", "cert" => "/tmp/cert.crt"})
 ssl_server = OpenSSL::SSL::Server.new(tcp_server, ctx)
