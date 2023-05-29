@@ -20,9 +20,12 @@ end
 
 def serve(server)
   puts "[+] Listening on #{server.local_address}"
-  while client = server.accept?
+  loop do
+    client = server.accept
     client.sync = true
     handle client
+  rescue
+    next
   end
 end
 
